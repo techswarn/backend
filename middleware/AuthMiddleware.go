@@ -8,6 +8,7 @@ import (
 
 // CreateMiddleware returns a middleware with JWT authentication
 func CreateMiddleware() func(*fiber.Ctx) error {
+	
 	// create a JWT middleware
 	config := jwtMiddleware.Config{
 		SigningKey:   []byte(utils.GetValue("JWT_SECRET_KEY")),

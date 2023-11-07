@@ -47,7 +47,7 @@ func Signup(userInput models.UserRequest) (string, error) {
 }
 
 // Login returns JWT Token for the registered user
-func Login(userInput models.UserRequest) (string, error) {
+func Login(userInput models.UserLoginRequest) (string, error) {
     // create a variable called "user"
 	var user models.User
 

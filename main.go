@@ -2,13 +2,16 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+
 	"github.com/techswarn/backend/routes"
+	"github.com/techswarn/backend/database"
+	"github.com/techswarn/backend/utils"
 
 	"fmt"
 	"os"
 
-	"github.com/techswarn/backend/database"
-	"github.com/techswarn/backend/utils"
+
 )
 
 // define the default port of the application
@@ -18,7 +21,11 @@ const DEFAULT_PORT = "3000"
 func NewFiberApp() *fiber.App {
 	// create a new fiber application
 	var app *fiber.App = fiber.New()
-
+	
+	//Loging middleware
+	app.Use(logger.New(logger.Config{
+		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
+	}))
 	// define the routes
 	routes.SetupRoutes(app)
 
@@ -29,7 +36,7 @@ func NewFiberApp() *fiber.App {
 func main() {
 	// create a new fiber application
 	var app *fiber.App = NewFiberApp()
-
+	// Initialize default config
 	// connect to the database
 	database.InitDatabase(utils.GetValue("DB_NAME"))
 

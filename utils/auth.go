@@ -1,11 +1,13 @@
 package utils
 
 import (
+	"fmt"
 	"strconv"
-	"time"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/gofiber/fiber/v2"
 	"strings"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type TokenMetadata struct {
@@ -71,6 +73,7 @@ func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 
 // CheckToken returns token check result
 func CheckToken(c *fiber.Ctx) (bool, error) {
+	fmt.Println("checktoken")
 	// get the current time
 	now := time.Now().Unix()
 

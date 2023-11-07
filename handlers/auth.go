@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -34,6 +35,15 @@ func Signup(c *fiber.Ctx) error {
 		})
 	}
 
+	fmt.Printf("%#v", userInput)
+
+    if userInput.Password != userInput.ConfirmPassword {
+		return c.Status(http.StatusBadRequest).JSON(models.Response[[]*models.ErrorResponse]{
+			Success: false,
+			Message: "Password does not match",
+		})
+	}
+
     // perform the signup
     // if signup is successful, the JWT token is returned
 	token, err := services.Signup(*userInput)
@@ -56,8 +66,9 @@ func Signup(c *fiber.Ctx) error {
 
 // Login returns JWT token for registered user
 func Login(c *fiber.Ctx) error {
+	fmt.Println("Here 1")
     // create a variable to store the request
-	var userInput *models.UserRequest = new(models.UserRequest)
+	var userInput *models.UserLoginRequest = new(models.UserLoginRequest)
 
     // parse the request into "userInput" variable
 	if err := c.BodyParser(userInput); err != nil {
@@ -70,7 +81,7 @@ func Login(c *fiber.Ctx) error {
 
     // validate the request
 	errors := userInput.ValidateStruct()
-
+    fmt.Printf("%#v", userInput)
     // if validation is failed, return the validation errors
 	if errors != nil {
 		return c.Status(http.StatusBadRequest).JSON(models.Response[[]*models.ErrorResponse]{
