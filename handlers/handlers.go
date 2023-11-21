@@ -61,7 +61,7 @@ func CreateNewItem(c *fiber.Ctx) error {
 	//Create a variable for item from request
 
 	var itemInput *models.ItemRequest = new(models.ItemRequest)
-	fmt.Printf("%v", itemInput)
+	fmt.Printf("checking input item Object: %v \n", itemInput)
 	// parse the request into "itemInput" variable
 	if err := c.BodyParser(itemInput); err != nil {
 		// if parsing is failed, return an error

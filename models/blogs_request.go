@@ -2,31 +2,30 @@ package models
 
 import (
 	"github.com/go-playground/validator/v10"
-	_ "fmt"
+	"fmt"
 )
 
-type ItemRequest struct {
-	Name     string `json:"name" validate:"required"`
-	Price    int    `json:"price" validate:"required,gt=0"`
-	Quantity int    `json:"quantity" validate:"gte=0"`
+type Blog_request struct {
+	UserID  string `json:"userid", validate:"required"`
+	Subject string `json:"subject", validate:"required"`
+	Paragraph string `json:"paragraph", validate:"required"`
 }
 
-// ValidateStruct performs struct based validation
-func (itemInput ItemRequest) ValidateStruct() []*ErrorResponse {
-	// create a variable to store validation errors
-	var errors []*ErrorResponse
+func (blog_details *Blog_request) ValidateStruct() []*ErrorResponse{
 
-	// create a new validator
+	fmt.Printf("Blog request %#v \n", blog_details)
+	var errors []*ErrorResponse
 	validate := validator.New()
 
 	// validate the struct
-	err := validate.Struct(itemInput)
+	err := validate.Struct(blog_details)
 
 	// if the validation is failed
     // insert the error inside "errors" variable
 
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
+			fmt.Println(err)
 			var element ErrorResponse
 			element.ErrorMessage = getErrorMessage(err)
 			element.Field = err.Field()

@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-
+	"time"
 	"github.com/gofiber/fiber/v2"
 	"github.com/techswarn/backend/models"
 	"github.com/techswarn/backend/services"
@@ -103,10 +103,18 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-    // return the JWT token
+	cookie := new(fiber.Cookie)
+	cookie.Name = "auth"
+	cookie.Value = token
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+
+	c.Cookie(cookie)
+
+	// return the JWT token
 	return c.JSON(models.Response[string]{
 		Success: true,
 		Message: "token data",
 		Data:    token,
 	})
+
 }

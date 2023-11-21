@@ -34,19 +34,3 @@ func (userInput UserRequest) ValidateStruct() []*ErrorResponse {
 	return errors
 }
 
-//ValidateStruct returns validation errors if validation failed
-func (userInput UserLoginRequest) ValidateStruct() []*ErrorResponse {
-	var errors []*ErrorResponse
-	validate := validator.New()
-	err := validate.Struct(userInput)
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element ErrorResponse
-			element.ErrorMessage = getErrorMessage(err)
-			element.Field = err.Field()
-			errors = append(errors, &element)
-		}
-	}
-
-	return errors
-}
