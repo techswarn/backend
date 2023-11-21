@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/techswarn/backend/model"
+	"github.com/techswarn/backend/models"
 	
 )
 
