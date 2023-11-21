@@ -1,5 +1,7 @@
 package models
 
+import "github.com/go-playground/validator/v10"
+
 type Tag struct {
 	TagID string `json:"tagid"`
 	Name string `json:"name"`
