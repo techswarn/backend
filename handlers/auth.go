@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/techswarn/backend/models"
 	"github.com/techswarn/backend/services"
+	"github.com/techswarn/backend/utils"
 )
 
 // Signup return JWT token
@@ -64,6 +65,26 @@ func Signup(c *fiber.Ctx) error {
 	})
 }
 
+func Checkauth(c *fiber.Ctx) error {
+	fmt.Println("Here 1")
+	var token string = c.Get("Token")
+	_ = token
+	isValid, err := utils.CheckToken(c)
+	fmt.Printf("Is token value: %v \n", isValid)
+	// if token is not valid, return an error
+	if !isValid {
+		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(models.Response[any]{
+		Success: true,
+		Message: "Valid user",
+	})
+}
+
 // Login returns JWT token for registered user
 func Login(c *fiber.Ctx) error {
 	fmt.Println("Here 1")
@@ -103,12 +124,13 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	cookie := new(fiber.Cookie)
-	cookie.Name = "auth"
-	cookie.Value = token
-	cookie.Expires = time.Now().Add(24 * time.Hour)
-
-	c.Cookie(cookie)
+	c.Cookie(&fiber.Cookie{
+        Name:     "token",
+        Value:    token,
+        Expires:  time.Now().Add(24 * time.Hour),
+        HTTPOnly: true,
+        SameSite: "lax",
+    })
 
 	// return the JWT token
 	return c.JSON(models.Response[string]{

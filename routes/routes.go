@@ -14,6 +14,7 @@ func SetupRoutes(app *fiber.App) {
 
 	publicRoutes.Post("/signup", handlers.Signup)
 	publicRoutes.Post("/login", handlers.Login)
+	publicRoutes.Post("/checkauth", handlers.Checkauth)
 	publicRoutes.Get("/items", handlers.GetAllItems)
 	publicRoutes.Get("/items/:id", handlers.GetItemByID)
 

@@ -47,7 +47,7 @@ func GenerateNewAccessToken() (string, error) {
 func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 	// verify the token
 	token, err := verifyToken(c)
-
+	fmt.Println(token)
 	// if verification is failed, return an error
 	if err != nil {
 		return nil, err
@@ -73,7 +73,6 @@ func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 
 // CheckToken returns token check result
 func CheckToken(c *fiber.Ctx) (bool, error) {
-	fmt.Println("checktoken")
 	// get the current time
 	now := time.Now().Unix()
 
@@ -119,6 +118,7 @@ func extractToken(c *fiber.Ctx) string {
 func verifyToken(c *fiber.Ctx) (*jwt.Token, error) {
 	// get the token from the bearer token
 	tokenString := extractToken(c)
+	fmt.Println(tokenString)
 
 	// verify the token with the JWT secret key
 	token, err := jwt.Parse(tokenString, jwtKeyFunc)

@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	"github.com/techswarn/backend/routes"
 	"github.com/techswarn/backend/database"
@@ -21,7 +22,15 @@ const DEFAULT_PORT = "3000"
 func NewFiberApp() *fiber.App {
 	// create a new fiber application
 	var app *fiber.App = fiber.New()
-	
+
+	app.Use(cors.New())
+
+	app.Use(cors.New(cors.Config{
+		AllowOriginsFunc: func(origin string) bool {
+			return os.Getenv("ENVIRONMENT") == "development"
+		},
+	}))
+		
 	//Loging middleware
 	app.Use(logger.New(logger.Config{
 		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
