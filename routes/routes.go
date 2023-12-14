@@ -4,11 +4,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/techswarn/backend/handlers"
 	"github.com/techswarn/backend/middleware"
+	"fmt"
+	"time"
 )
 
 // SetupRoutes register routes based on functionalities
 func SetupRoutes(app *fiber.App) {
-
+	fmt.Println(time.Now())
 	// public routes
 	var publicRoutes fiber.Router = app.Group("/api/v1")
 
