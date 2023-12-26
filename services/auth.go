@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/techswarn/backend/database"
@@ -10,6 +11,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+type UserDetails struct {
+	Id string
+	Email string
+	UserName string
+	FirstName string
+}
+
+type data struct {
+	Token string
+	User UserDetails
+}
 // Signup returns JWT token for the user
 func Signup(userInput models.UserRequest) (string, error) {
     // create a password using bcrypt library
@@ -35,7 +47,7 @@ func Signup(userInput models.UserRequest) (string, error) {
 	database.DB.Create(&user)
 
     // generate the JWT token
-	token, err := utils.GenerateNewAccessToken()
+	token, err := utils.GenerateNewAccessToken(user.ID)
 
     // if generation is failed, return the error
 	if err != nil {
@@ -47,16 +59,16 @@ func Signup(userInput models.UserRequest) (string, error) {
 }
 
 // Login returns JWT Token for the registered user
-func Login(userInput models.UserLoginRequest) (string, error) {
+func Login(userInput models.UserLoginRequest) (data, error) {
     // create a variable called "user"
 	var user models.User
 
     // find the user based on the email
 	result := database.DB.First(&user, "email = ?", userInput.Email)
-
+	fmt.Printf("%s", user.ID)
     // if the user is not found, return the error
 	if result.RowsAffected == 0 {
-		return "", errors.New("user not found")
+		return data{}, errors.New("user not found")
 	}
 
     // compare the password input with the password from the database
@@ -64,17 +76,28 @@ func Login(userInput models.UserLoginRequest) (string, error) {
 
     // if the password is not match, return the error
 	if err != nil {
-		return "", errors.New("invalid password")
+		return data{}, errors.New("invalid password")
 	}
 
     // generate the JWT token
-	token, err := utils.GenerateNewAccessToken()
-
+	token, err := utils.GenerateNewAccessToken(user.ID)
+   
     // if generation is failed, return the error
 	if err != nil {
-		return "", err
+		return data{}, err
+	}
+
+	res := data{
+		Token: token,
+		User: UserDetails{
+			Id: user.ID,
+			Email: user.Email,
+			UserName: user.UserName,
+			FirstName: user.FirstName,
+		},
+
 	}
 
     // return the JWT token
-	return token, nil
+	return res, nil;
 }

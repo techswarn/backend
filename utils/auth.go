@@ -15,7 +15,7 @@ type TokenMetadata struct {
 }
 
 // GenerateNewAccessToken returns JWT token
-func GenerateNewAccessToken() (string, error) {
+func GenerateNewAccessToken(id string) (string, error) {
     // get the JWT secret key from .env file
 	secret := GetValue("JWT_SECRET_KEY")
 
@@ -23,7 +23,9 @@ func GenerateNewAccessToken() (string, error) {
 	minutesCount, _ := strconv.Atoi(GetValue("JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT"))
 
     // create a JWT claim object
-	claims := jwt.MapClaims{}
+	claims := jwt.MapClaims{
+		"userid":  id,
+	}
 
     // add expiration time for the token
 	claims["exp"] = time.Now().Add(time.Minute * time.Duration(minutesCount)).Unix()

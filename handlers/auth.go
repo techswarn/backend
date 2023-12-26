@@ -114,7 +114,7 @@ func Login(c *fiber.Ctx) error {
 
     // perform the login
     // if login is successful, the JWT token is returned
-	token, err := services.Login(*userInput)
+	data, err := services.Login(*userInput)
 
     // if login is failed, return an error
 	if err != nil {
@@ -126,17 +126,17 @@ func Login(c *fiber.Ctx) error {
 
 	c.Cookie(&fiber.Cookie{
         Name:     "token",
-        Value:    token,
+        Value:    data.Token,
         Expires:  time.Now().Add(24 * time.Hour),
         HTTPOnly: true,
         SameSite: "lax",
     })
 
 	// return the JWT token
-	return c.JSON(models.Response[string]{
+	return c.JSON(models.Response[any]{
 		Success: true,
 		Message: "token data",
-		Data:    token,
+		Data:    data,
 	})
 
 }
