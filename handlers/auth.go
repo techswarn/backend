@@ -70,7 +70,20 @@ func Checkauth(c *fiber.Ctx) error {
 	var token string = c.Get("Token")
 	_ = token
 	isValid, err := utils.CheckToken(c)
+
+	userid, err := utils.GetClaimData(c)
+
+	fmt.Printf("Userid : %s \n", userid)
 	fmt.Printf("Is token value: %v \n", isValid)
+	user, err := services.GetUserByID(userid)
+	if err != nil {
+		fmt.Printf("Error while fetching user: %s", err)
+		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		}) 
+	}
+
 	// if token is not valid, return an error
 	if !isValid {
 		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
@@ -82,6 +95,7 @@ func Checkauth(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(models.Response[any]{
 		Success: true,
 		Message: "Valid user",
+		Data: user,
 	})
 }
 

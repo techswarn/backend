@@ -9,15 +9,28 @@ import(
     "github.com/techswarn/backend/database"
 )
 
-func GetUserByID(id string) (models.User, error) {
+type UserDetail struct {
+	Id string
+	Email string
+	UserName string
+	FirstName string
+}
+
+func GetUserByID(id string) (UserDetail, error) {
 	var user models.User
 	result := database.DB.First(&user, "id = ?", id)
 
 // if the item data is not found, return an error
 	if result.RowsAffected == 0 {
-	return models.User{}, errors.New("User not found")
+		return UserDetail{}, errors.New("User not found")
 	}
 
 // return the item data from the database
-	return user, nil
+	res := UserDetail{
+		Id: user.ID,
+		Email: user.Email,
+		UserName: user.UserName,
+		FirstName: user.FirstName,
+	}
+	return res, nil
 }

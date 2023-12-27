@@ -21,7 +21,7 @@ func GetUser(c *fiber.Ctx) error {
 		})
 	}
 	fmt.Printf("%#v", user)
-	return c.JSON(models.Response[models.User]{
+	return c.JSON(models.Response[any]{
 		Success: true,
 		Message: "User for the id",
 		Data:    user,

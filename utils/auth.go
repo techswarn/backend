@@ -12,6 +12,7 @@ import (
 
 type TokenMetadata struct {
     Expires int64
+	userid string
 }
 
 // GenerateNewAccessToken returns JWT token
@@ -57,7 +58,12 @@ func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 
 	// get the token claim data
 	claims, ok := token.Claims.(jwt.MapClaims)
-
+	fmt.Println("claims-- \n")
+	fmt.Println(claims["userid"].(string)) 
+	
+	fmt.Println("\n claims-- ")
+	
+    //fmt.Printf("user id : %s", userid)
 	//  if token claim data exists and token is valid
 	if ok && token.Valid {
 		// set the token expiration date
@@ -66,11 +72,24 @@ func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 		// return the token metadata
 		return &TokenMetadata{
 			Expires: expires,
+			userid: claims["userid"].(string),
 		}, nil
 	}
 
 	// return an error if token is invalid
 	return nil, err
+}
+
+func GetClaimData (c *fiber.Ctx) (string, error) {
+	claims, err := ExtractTokenMetadata(c)
+
+	if err != nil {
+		fmt.Printf("Error while fetching claim data: %s \n", err)
+		return "", err
+	}
+	fmt.Println(claims.userid)
+	return claims.userid, err
+
 }
 
 // CheckToken returns token check result
@@ -80,6 +99,7 @@ func CheckToken(c *fiber.Ctx) (bool, error) {
 
 	// get the token claim data
 	claims, err := ExtractTokenMetadata(c)
+
 
 	// if claim data is not found or invalid
 	// return false
