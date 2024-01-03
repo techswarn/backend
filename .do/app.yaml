@@ -1,0 +1,57 @@
+alerts:
+  - rule: DEPLOYMENT_FAILED
+  - rule: DOMAIN_FAILED
+domains:
+  - domain: go.techenv.dev
+    type: PRIMARY
+    zone: techenv.dev
+features:
+  - buildpack-stack=ubuntu-22
+ingress:
+  rules:
+    - component:
+        name: go-backend
+      match:
+        path:
+          prefix: /
+name: seashell-app
+region: blr
+services:
+  - environment_slug: go
+    envs:
+      - key: DB_HOST
+        scope: RUN_AND_BUILD_TIME
+        value: db-mysql-blr-do-user-11648032-0.b.db.ondigitalocean.com
+      - key: DB_PORT
+        scope: RUN_AND_BUILD_TIME
+        value: "25060"
+      - key: DB_USER
+        scope: RUN_AND_BUILD_TIME
+        value: doadmin
+      - key: DB_PASSWORD
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: EV[1:6yUST+D7CkRNHQLHHUuAKkb8+iALvzby:aTr7ipgmN1Q22VDjS22yoShg0LU7MXpC6PfcuPIZcSuZ0u7VEeZwlA==]
+      - key: DB_NAME
+        scope: RUN_AND_BUILD_TIME
+        value: backend
+      - key: JWT_SECRET_KEY
+        scope: RUN_AND_BUILD_TIME
+        type: SECRET
+        value: EV[1:0XZ8wl22k3InWncTXVvvI8ljxQe4bfYC:k4FAnqrlc/ng9+tpPsxAiksZ79et2S5eWJAsCWqpzP5CUOOk2dcJNJBA]
+      - key: JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT
+        scope: RUN_AND_BUILD_TIME
+        value: "15"
+      - key: GO_ENV
+        scope: RUN_AND_BUILD_TIME
+        value: PRODUCTION
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: techswarn/backend
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xs
+    name: go-backend
+    run_command: bin/backend
+    source_dir: /

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: swarntech/go-backend:latest
+          name: go-backend
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "db-mysql-blr-do-user-11648032-0.b.db.ondigitalocean.com"
+            - name: DB_PORT
+              value: "25060"
+            - name: DB_USER
+              value: "doadmin"
+            - name: DB_NAME
+              value: "backend"
+            - name: JWT_SECRET_KEY_EXPIRE_MINUTES_COUNT
+              value: "15"
+            - name: GO_ENV
+              value: "PRODUCTION"
+          envFrom:
+            - secretRef:
+                name: backend-secret
+          resources: {}
+status: {}
