@@ -50,7 +50,7 @@ func NewFiberApp() *fiber.App {
 
 func main() {
 	// create a new fiber application
-	var app *fiber.App = NewFiberApp()
+	var app *fiber.App = NewFiberAp()
 	// Initialize default config
 	// connect to the database
 	database.InitDatabase(utils.GetValue("DB_NAME"))
