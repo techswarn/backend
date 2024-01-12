@@ -7,12 +7,12 @@ type Tag struct {
 	Name string `json:"name"`
 }
 
-type TagRequest struct {
+type Tag_Request struct {
 	Name string `json:"name" validate:"required"`
 }
 
 //ValidateStruct returns validation errors if validation failed
-func (TagInput TagRequest) ValidateStruct() []*ErrorResponse {
+func (TagInput Tag_Request) ValidateStruct() []*ErrorResponse {
 	var errors []*ErrorResponse
 	validate := validator.New()
 	err := validate.Struct(TagInput)

@@ -32,7 +32,7 @@ func SetupRoutes(app *fiber.App) {
 	publicRoutes.Get("/blogs", handlers.GetAllBlogs)
 
 	//Tag routes
-	// publicRoutes.Post("/tags", handlers.CreateNewTag)
+	publicRoutes.Post("/tags", handlers.CreateNewTag)
 	// publicRoutes.Get("/tags", handlers.GetAllTags)
 
 	// private routes, authentication is required
