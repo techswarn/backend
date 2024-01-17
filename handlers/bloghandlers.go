@@ -80,7 +80,9 @@ func GetBlogs(c *fiber.Ctx) error {
 			Message: err.Error(),
 		})
 	}
-
+	fmt.Println("------------")
+	fmt.Println(s.Keyword)
+	fmt.Println("------------")
 	var blog []models.Blog = services.GetBlogs(s.Keyword, s.Tag)
 	fmt.Printf("List of Blog: %#v \n", blog)
 
