@@ -16,7 +16,7 @@ import (
 )
 
 // define the default port of the application
-const DEFAULT_PORT = "443"
+const DEFAULT_PORT = "3000"
 
 // NewFiberApp returns fiber application
 func NewFiberApp() *fiber.App {

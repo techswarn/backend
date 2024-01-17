@@ -30,6 +30,7 @@ func SetupRoutes(app *fiber.App) {
 	//Blog routes
 	publicRoutes.Post("/blogs", handlers.CreateNewBlog)
 	publicRoutes.Get("/blogs", handlers.GetAllBlogs)
+	publicRoutes.Post("/blog", handlers.GetBlogs)
 
 	//Tag routes
 	publicRoutes.Post("/tags", handlers.CreateNewTag)

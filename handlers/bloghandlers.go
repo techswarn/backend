@@ -10,6 +10,11 @@ import (
 	"github.com/techswarn/backend/services"
 )
 
+type Search struct {
+	Keyword string `json:"keyword"`
+	Tag string `json:"tag"`
+}
+
 func CreateNewBlog (c *fiber.Ctx) error {
 	fmt.Println("Create new Blog")
 
@@ -64,5 +69,24 @@ func GetAllBlogs(c *fiber.Ctx) error {
 		Success: true,
 		Message: "List of blogs",
 		Data:  blogs,
+	})
+}
+
+func GetBlogs(c *fiber.Ctx) error {
+	s := new(Search)
+	if err := c.BodyParser(s); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	var blog []models.Blog = services.GetBlogs(s.Keyword, s.Tag)
+	fmt.Printf("List of Blog: %#v \n", blog)
+
+	return c.Status(http.StatusOK).JSON(models.Response[[]models.Blog]{
+		Success: true,
+		Message: "List of blogs",
+		Data:  blog,
 	})
 }

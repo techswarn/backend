@@ -39,3 +39,14 @@ func GetAllBlogs() []models.Blog {
 	// return all items from the database
 	return Blogs
 }
+
+func GetBlogs(keyword string, tag string ) []models.Blog {
+	// create a variable to store items data
+	var Blogs []models.Blog = []models.Blog{}
+    fmt.Println(keyword)
+	database.DB.Where("subject LIKE ?", "%"+keyword+"%").Find(&Blogs)
+   // SELECT * FROM users WHERE name LIKE '%jin%';
+
+	// return all items from the database
+	return Blogs
+}
