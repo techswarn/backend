@@ -11,13 +11,16 @@ func SetupRoutes(app *fiber.App) {
 	// public routes
 	var publicRoutes fiber.Router = app.Group("/api/v1")
 
+	//Health checks and other data
+	publicRoutes.Get("/", handlers.Process)
+
 	//Auth
 	publicRoutes.Post("/signup", handlers.Signup)
 	publicRoutes.Post("/login", handlers.Login)
 	publicRoutes.Post("/checkauth", handlers.Checkauth)
 
-	publicRoutes.Get("/items", handlers.GetAllItems)
-	publicRoutes.Get("/items/:id", handlers.GetItemByID)
+	// publicRoutes.Get("/items", handlers.GetAllItems)
+	// publicRoutes.Get("/items/:id", handlers.GetItemByID)
 
 	//User
 	publicRoutes.Get("/users/:id", handlers.GetUser)
@@ -26,6 +29,14 @@ func SetupRoutes(app *fiber.App) {
 	// publicRoutes.Get("/users", handlers.GetAllUsers)
 	// publicRoutes.Delete("/users/:id", handlers.DeleteUser)
 
+    //Fish routes
+	publicRoutes.Post("/item", handlers.CreateNewItem)
+	publicRoutes.Get("/item", handlers.GetAllItem)
+	publicRoutes.Put("/item/:id", handlers.UpdateItem)
+
+	//Fish logic routes
+	//Associate fish to a seller
+	publicRoutes.Post("/inventory", handlers.AddInventory)
 
 	//Blog routes
 	publicRoutes.Post("/blogs", handlers.CreateNewBlog)
@@ -41,6 +52,6 @@ func SetupRoutes(app *fiber.App) {
 
 	privateRoutes.Post("/items", handlers.CreateNewItem)
 	privateRoutes.Put("/items/:id", handlers.UpdateItem)
-	privateRoutes.Delete("/items/:id", handlers.DeleteItem)
+//	privateRoutes.Delete("/items/:id", handlers.DeleteItem)
 
 }

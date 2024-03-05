@@ -6,13 +6,15 @@ import (
 )
 
 type ItemRequest struct {
+
 	Name     string `json:"name" validate:"required"`
 	Price    int    `json:"price" validate:"required,gt=0"`
 	Quantity int    `json:"quantity" validate:"gte=0"`
+	Image    string `json:"image" validate:"required"`
 }
 
 // ValidateStruct performs struct based validation
-func (itemInput ItemRequest) ValidateStruct() []*ErrorResponse {
+func (ItemRequest ItemRequest) ValidateStruct() []*ErrorResponse {
 	// create a variable to store validation errors
 	var errors []*ErrorResponse
 
@@ -20,7 +22,7 @@ func (itemInput ItemRequest) ValidateStruct() []*ErrorResponse {
 	validate := validator.New()
 
 	// validate the struct
-	err := validate.Struct(itemInput)
+	err := validate.Struct(ItemRequest)
 
 	// if the validation is failed
     // insert the error inside "errors" variable
