@@ -42,5 +42,5 @@ func InitDatabase(dbName string) {
     // if connection is successful, print out this message
 	fmt.Println("Connected to the database")
 
-	DB.AutoMigrate(&models.User{}, &models.Blog{}, &models.Tag{}, &models.BlogTag{}, &models.Item{}, &models.ItemUser{})
+	DB.AutoMigrate(&models.User{}, &models.Blog{}, &models.Tag{}, &models.BlogTag{}, &models.Item{}, &models.ItemUser{}, &models.Address{})
 }

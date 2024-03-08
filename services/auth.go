@@ -40,11 +40,26 @@ func Signup(userInput models.UserRequest) (string, error) {
 		FirstName: userInput.FirstName,
 		LastName: userInput.LastName,
 		Access: userInput.Access,
+		Phone: userInput.Phone,
 		Password: string(password),
 	}
 
     // create a user into the database
-	database.DB.Create(&user)
+	dbuser := database.DB.Create(&user)
+
+	fmt.Printf("Create user DB error: %s \n", dbuser.Error)
+
+	address := models.Address{
+		State: userInput.State,
+		City:	userInput.City,
+		Street: userInput.Street,
+		Pincode: userInput.Pincode,
+		User_id: user.ID,
+	}
+
+	res := database.DB.Create(&address)
+
+	fmt.Printf("DB error: %s \n", res.Error)
 
     // generate the JWT token
 	token, err := utils.GenerateNewAccessToken(user.ID)

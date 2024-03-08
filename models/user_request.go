@@ -4,14 +4,18 @@ import "github.com/go-playground/validator/v10"
 
 type UserRequest struct {
 	Email    string `json:"email" validate:"required,email"`
-	Phone int64 `JSON:"phone" gorm:"unique"`
 	FirstName string `json:"firstname" validate:"required"`
 	LastName string `json:"lastname" validate:"required"`
 	UserName string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required,min=6"`
     Access string `json:"access"`
+	Phone int64 `JSON:"phone" validate:"required,min=10"`
 	Type string `JSON:"type"`
 	ConfirmPassword string `json:confirmpassword" validate:"required,min=6"`
+	State string `json:"state"`
+	City string `json:"city"`
+	Street string `json:"street"`
+	Pincode int `json:"pincode"`
 }
 
 type UserLoginRequest struct {

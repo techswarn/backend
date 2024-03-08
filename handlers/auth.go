@@ -26,7 +26,7 @@ func Signup(c *fiber.Ctx) error {
 
     // validate the request
 	errors := userInput.ValidateStruct()
-
+	fmt.Printf("Input: %#v", userInput)
     // if validation is failed, return the validation errors
 	if errors != nil {
 		return c.Status(http.StatusBadRequest).JSON(models.Response[[]*models.ErrorResponse]{

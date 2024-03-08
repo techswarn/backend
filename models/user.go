@@ -14,6 +14,7 @@ type User struct {
 	Access string `JSON:"access"`
 	Type string `JSON:"type"`
 	Password  string    `json:"password"`
+	Photo  string `json:"photo"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
