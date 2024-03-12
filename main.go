@@ -49,6 +49,7 @@ func NewFiberApp() *fiber.App {
 }
 
 func main() {
+	fmt.Println("Go backend")
 	// create a new fiber application
 	var app *fiber.App = NewFiberApp()
 	// Initialize default config

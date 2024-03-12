@@ -12,7 +12,7 @@ import (
 
 func CreateItem(ItemRequest models.ItemRequest) (models.Item, error) {
 	var item models.Item
-	path, err := utils.UploadImage("mackerel.jpg")
+	path, err := utils.UploadImage("sardin.jpg")
 
 	if err != nil {
 		fmt.Printf("Error while uploading image to spaces: %s", err)
