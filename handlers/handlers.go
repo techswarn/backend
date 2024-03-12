@@ -13,24 +13,16 @@ import (
 func Process(c *fiber.Ctx) error {
 	wg := sync.WaitGroup{}
 	fmt.Println("Health checks route")
-	fmt.Printf("CPU count: %d \n", runtime.NumCPU())
-	fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
+	headers := c.GetReqHeaders()
+	fmt.Println(headers)
 	done := make(chan int)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
 		wg.Add(1)
 		go func(n int) {
 			defer wg.Done()
-			for {
-				select {
-				case <-done:
-					fmt.Printf("CPU count: %d \n", runtime.NumCPU())
-					fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
-					return
-				default:
-				}
-				fmt.Println(n)
-			}
+			fmt.Printf("CPU count: %d \n", runtime.NumCPU())
+			fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
 		}(i)
 	}
 	wg.Wait()
@@ -39,5 +31,6 @@ func Process(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(models.Response[any]{
 		Success: true,
 		Message: "backend api",
+		Data: headers,
 	})
 }
