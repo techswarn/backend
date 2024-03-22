@@ -14,7 +14,6 @@ func Process(c *fiber.Ctx) error {
 	wg := sync.WaitGroup{}
 	fmt.Println("Health checks route")
 	headers := c.GetReqHeaders()
-	fmt.Println(headers)
 	done := make(chan int)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
