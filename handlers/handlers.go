@@ -1,38 +1,34 @@
 package handlers
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"github.com/gofiber/fiber/v2"
 	"github.com/techswarn/backend/models"
 	"runtime"
 	"time"
-	"sync"
 )
 
 func Process(c *fiber.Ctx) error {
-	wg := sync.WaitGroup{}
-	fmt.Println("Health checks route")
+
+	log.Println("Health checks route")
 	headers := c.GetReqHeaders()
 	done := make(chan int)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
-		
-		wg.Add(1)
-		go func(n int) {
-			defer wg.Done()
+
+		go func() {
 				for {
 					select {
 					case <-done:
-						fmt.Printf("CPU count: %d \n", runtime.NumCPU())
-						fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
+						log.Printf("CPU count: %d \n", runtime.NumCPU())
+						log.Printf("GO routine count: %d \n", runtime.NumGoroutine())
 						return
 					default:
 					}
 				}
-		}(i)
+		}()
 	}
-	wg.Wait()
 	time.Sleep(time.Second * 10)
 	close(done)
 	return c.Status(http.StatusOK).JSON(models.Response[any]{
