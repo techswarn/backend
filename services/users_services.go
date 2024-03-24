@@ -34,3 +34,15 @@ func GetUserByID(id string) (UserDetail, error) {
 	}
 	return res, nil
 }
+
+func GetAllSellersByType(cat string) ([]models.User) {
+
+	 var Users []models.User = []models.User{}
+
+	 // get all data from the database order by created_at
+	 database.DB.Order("created_at desc").Find(&Users)
+	 
+ 
+	 // return all items from the database
+	 return Users
+}

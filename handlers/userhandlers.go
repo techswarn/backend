@@ -27,3 +27,16 @@ func GetUser(c *fiber.Ctx) error {
 		Data:    user,
 	})
 }
+
+func GetAllSellersByType(c *fiber.Ctx) error {
+	sellers := services.GetAllSellersByType("sellers")
+
+	fmt.Printf("List of Sellers: %#v \n", sellers)
+	
+
+	return c.Status(http.StatusOK).JSON(models.Response[[]models.User]{
+		Success: true,
+		Message: "List of item",
+		Data:  sellers,
+	})
+}

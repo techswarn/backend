@@ -26,8 +26,12 @@ func SetupRoutes(app *fiber.App) {
 	publicRoutes.Get("/users/:id", handlers.GetUser)
 	
 	// publicRoutes.Put("/users", handlers.UpdateUser)
-	// publicRoutes.Get("/users", handlers.GetAllUsers)
+	   
 	// publicRoutes.Delete("/users/:id", handlers.DeleteUser)
+
+	
+    //Sellers
+	publicRoutes.Get("/seller", handlers.GetAllSellersByType)
 
     //Fish routes
 	publicRoutes.Post("/item", handlers.CreateNewItem)

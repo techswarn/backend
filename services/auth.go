@@ -31,7 +31,7 @@ func Signup(userInput models.UserRequest) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	fmt.Printf("User input in services %#v", userInput)
     // create a new user object
     // this user will be added into the database
 	var user models.User = models.User{
@@ -42,12 +42,17 @@ func Signup(userInput models.UserRequest) (string, error) {
 		Access: userInput.Access,
 		Phone: userInput.Phone,
 		Password: string(password),
+		Type: userInput.Type,
 	}
 
     // create a user into the database
 	dbuser := database.DB.Create(&user)
 
 	fmt.Printf("Create user DB error: %s \n", dbuser.Error)
+
+	if dbuser.Error != nil {
+		return "", errors.New("Phone number already exists")
+	}
 
 	address := models.Address{
 		State: userInput.State,
