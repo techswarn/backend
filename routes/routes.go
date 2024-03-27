@@ -32,6 +32,7 @@ func SetupRoutes(app *fiber.App) {
 	
     //Sellers
 	publicRoutes.Get("/seller", handlers.GetAllSellersByType)
+	
 
     //Fish routes
 	publicRoutes.Post("/item", handlers.CreateNewItem)

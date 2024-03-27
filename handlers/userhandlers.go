@@ -29,7 +29,14 @@ func GetUser(c *fiber.Ctx) error {
 }
 
 func GetAllSellersByType(c *fiber.Ctx) error {
-	sellers := services.GetAllSellersByType("sellers")
+
+	sellers, err := services.GetAllSellersByType("sellers")
+	if(err != nil) {
+		return c.Status(http.StatusInternalServerError).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
 
 	fmt.Printf("List of Sellers: %#v \n", sellers)
 	

@@ -1,7 +1,7 @@
 package services
 
 import(
-	_ "fmt"
+	"fmt"
 	"github.com/techswarn/backend/models"
     _ "github.com/google/uuid"
     _ "time"
@@ -35,14 +35,19 @@ func GetUserByID(id string) (UserDetail, error) {
 	return res, nil
 }
 
-func GetAllSellersByType(cat string) ([]models.User) {
+func GetAllSellersByType(cat string) ([]models.User, error) {
 
 	 var Users []models.User = []models.User{}
 
 	 // get all data from the database order by created_at
-	 database.DB.Order("created_at desc").Find(&Users)
-	 
- 
+	 result := database.DB.Where("type = ?", "seller").Find(&Users)
+
+
+	 if result.Error != nil {
+		fmt.Printf("DB read error: %s", &result.Error)
+		return nil, result.Error
+	}
+
 	 // return all items from the database
-	 return Users
+	 return Users, nil
 }
