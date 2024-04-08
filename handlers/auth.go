@@ -18,6 +18,7 @@ func Signup(c *fiber.Ctx) error {
 
     // parse the request into "userInput" variable
 	if err := c.BodyParser(userInput); err != nil {
+		fmt.Printf("body parser data: %#v", userInput)
         // if parsing is failed, return an error
 		return c.Status(http.StatusBadRequest).JSON(models.Response[any]{
 			Success: false,
