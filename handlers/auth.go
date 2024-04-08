@@ -13,6 +13,7 @@ import (
 // Signup return JWT token
 func Signup(c *fiber.Ctx) error {
     // create a variable to store the request
+	fmt.Println("Signup handler called")
 	var userInput *models.UserRequest = new(models.UserRequest)
 
     // parse the request into "userInput" variable
