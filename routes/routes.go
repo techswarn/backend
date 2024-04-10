@@ -50,6 +50,9 @@ func SetupRoutes(app *fiber.App) {
 
 	//Tag routes
 	publicRoutes.Post("/tags", handlers.CreateNewTag)
+
+	//Additional data
+	//publicRoutes.Post("/upload", handlers.uploadFile)
 	// publicRoutes.Get("/tags", handlers.GetAllTags)
 
 	// private routes, authentication is required
@@ -58,5 +61,7 @@ func SetupRoutes(app *fiber.App) {
 	privateRoutes.Post("/items", handlers.CreateNewItem)
 	privateRoutes.Put("/items/:id", handlers.UpdateItem)
 //	privateRoutes.Delete("/items/:id", handlers.DeleteItem)
+
+
 
 }

@@ -4,7 +4,7 @@ import (
 
 	"fmt"
 	"net/http"
-
+	"log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/techswarn/backend/models"
 	"github.com/techswarn/backend/services"
@@ -62,6 +62,7 @@ func CreateNewBlog (c *fiber.Ctx) error {
 }
 
 func GetAllBlogs(c *fiber.Ctx) error {
+	log.Printf("Request Headers: %#v", c.GetReqHeaders())
 	var blogs []models.Blog = services.GetAllBlogs()
 	fmt.Printf("List of Blogs: %#v \n", blogs)
 

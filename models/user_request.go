@@ -11,6 +11,7 @@ type UserRequest struct {
     Access string `json:"access"`
 	Phone int64 `JSON:"phone" validate:"required,min=10"`
 	Type string `JSON:"type"`
+	
 	ConfirmPassword string `json:confirmpassword" validate:"required,min=6"`
 	State string `json:"state"`
 	City string `json:"city"`

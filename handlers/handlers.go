@@ -7,6 +7,7 @@ import (
 	"github.com/techswarn/backend/models"
 	"runtime"
 	"time"
+	"fmt"
 )
 
 func Process(c *fiber.Ctx) error {
@@ -36,4 +37,21 @@ func Process(c *fiber.Ctx) error {
 		Message: "backend api",
 		Data: headers,
 	})
+}
+
+//IMAGE UPLOAD HANDLERS
+
+func uploadFile(c *fiber.Ctx) error {
+	  // Get first file from form field "document":
+	  file, err := c.FormFile("image")
+
+	  if err!= nil {
+		return c.Status(http.StatusInternalServerError).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	  }
+
+	  // Save file to root directory:
+	  return c.SaveFile(file, fmt.Sprintf("./../assets/%s", file.Filename))
 }
