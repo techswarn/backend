@@ -52,7 +52,7 @@ func SetupRoutes(app *fiber.App) {
 	publicRoutes.Post("/tags", handlers.CreateNewTag)
 
 	//Additional data
-	//publicRoutes.Post("/upload", handlers.uploadFile)
+	publicRoutes.Post("/upload", handlers.UploadFile)
 	// publicRoutes.Get("/tags", handlers.GetAllTags)
 
 	// private routes, authentication is required

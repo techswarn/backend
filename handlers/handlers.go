@@ -41,7 +41,7 @@ func Process(c *fiber.Ctx) error {
 
 //IMAGE UPLOAD HANDLERS
 
-func uploadFile(c *fiber.Ctx) error {
+func UploadFile(c *fiber.Ctx) error {
 	  // Get first file from form field "document":
 	  file, err := c.FormFile("image")
 
