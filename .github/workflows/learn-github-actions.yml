@@ -1,6 +1,12 @@
+name: Github action auto deploy
 deploy_server:
 runs-on: ubuntu-latest
 needs: release
+
+on:
+  push:
+    branches: ["Add-address-and-telemetry-changes"]
+
 steps:
   - name: DigitalOcean Server Deployment
     uses: digitalocean/app_action@v1.1.6
