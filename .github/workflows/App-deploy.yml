@@ -1,9 +1,18 @@
-deploy:
-  timeout-minutes: 10
-  runs-on: ubuntu-latest
-  steps:
-    - name: DigitalOcean App Platform deployment
-      uses: digitalocean/app_action@v1.1.6
-      with:
-        app_name: zbx-receivers-app
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: DigitalOcean App Platform deployment
+        uses: digitalocean/app_action@v1.1.6
+        with:
+          app_name: seashell-app
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
