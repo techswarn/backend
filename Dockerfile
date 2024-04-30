@@ -26,7 +26,7 @@ RUN go mod download
 COPY . ./
 
 RUN go build -v -o bin/backend
-RUN echo $(ls)
+
 EXPOSE 3000
 
 
@@ -41,7 +41,7 @@ FROM alpine
 RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
-RUN echo $(ls)
+
 COPY --from=builder /app/bin/backend /usr/local/bin/
 
 CMD ["backend"]
