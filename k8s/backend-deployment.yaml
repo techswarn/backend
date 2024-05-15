@@ -6,7 +6,7 @@ metadata:
     app: backend
   name: backend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -38,5 +38,11 @@ spec:
           envFrom:
             - secretRef:
                 name: backend-secret
-          resources: {}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "1"
+            limits:
+              memory: "128Mi"
+              cpu: "1"
 status: {}

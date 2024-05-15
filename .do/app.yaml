@@ -1,23 +1,53 @@
 alerts:
   - rule: DEPLOYMENT_FAILED
   - rule: DOMAIN_FAILED
+databases:
+  - cluster_name: db-mysql-blr
+    db_name: backend
+    db_user: doadmin
+    engine: MYSQL
+    name: db-mysql-blr
+    production: true
+    version: "8"
 domains:
   - domain: go.techenv.dev
     type: PRIMARY
     zone: techenv.dev
+  - domain: go2.techenv.dev
+    type: ALIAS
+    zone: techenv.dev
 features:
   - buildpack-stack=ubuntu-22
+functions:
+  - github:
+      branch: main
+      deploy_on_push: true
+      repo: techswarn/phpfunc
+    name: phpfunc
+    source_dir: /
 ingress:
   rules:
+    - component:
+        name: phpfunc
+      match:
+        path:
+          prefix: /func
     - component:
         name: go-backend
       match:
         path:
           prefix: /
 name: seashell-app
-region: blr
+region: sfo
 services:
-  - environment_slug: go
+  - autoscaling:
+      max_instance_count: 2
+      metrics:
+        cpu:
+          percent: 70
+      min_instance_count: 1
+    build_command: git lfs install && git lfs pull
+    environment_slug: go
     envs:
       - key: DB_HOST
         scope: RUN_AND_BUILD_TIME
@@ -45,13 +75,26 @@ services:
       - key: GO_ENV
         scope: RUN_AND_BUILD_TIME
         value: PRODUCTION
+      - key: DATABASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ${db-mysql-blr.DATABASE_URL}
+      - key: KEY
+        scope: RUN_AND_BUILD_TIME
+        value: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRREF6VW9KeFhMTjNueloKMGFueG5oOVl1Q1NFYVYwbVRXVllOTzR4ZTNmd2VtQ3hxMSs4dGNSYzRKaEJMYUJwTTM3UzlVWVVoUVBYZWN3bApiZVU2RVc1dGxkWDBObHJsczdhQi9XSWZKYTE3ejF1QnZIcUVQbjFwWWVMV0dYVTlIZ3lKS2lqbk8waUxPbWRmCnRaOTVXelIyL0w0RmVsZ1RvOHhwaUJXdFVsTUtDSHNRK0drN3FRRnFpdC8zWkNLQ0NCRithQ2tCd1BnbTMxZ2EKL1dxR3A5OFA4U1RQTWZhWXpGL042VW9Oc1RyOEY5OWlNL2Fia2Y3ZEN1Uk1QaVVzdHZCUURXYkgzb0YvYnpINQovNWxqbENwSXJCeUU1cWVUMW5veERGOEVGWXlSMWxHYlJZWFlrUVRrMTlHOEZUNVNNV2htSDhDVnBOcGxyVDE2CkF3WnZWRjIvQWdNQkFBRUNnZ0VBSjV0RWhXTlpaUzg2YUtpb2g2a2ErV2ZDb0t6Z1pOanJZOFpqMUNod0NDZXIKcTNQd0U5MG5QSWtxM2VEWW5pUGsvc05DSlQ3NS9nN1lRQ3dtTmRxVTI5QTNCcGNQN3pZTzNQOUhZK3lpaWRlYwpEYmZCVjE5YTlnWVV5alNxbithSFhyb1pjdjc3dFJaSFhDTDhZcnE0dVdUTVNHWE1xQ1F5L3M3azNSa1hVK3owCndzMUQ2ZS9NTlRjK2pFZWVoSnRDaVRmNWRIUG9sc2VTZnYwYjliVVNlTE1pNkpGY2JXaGdXWm1xMW1KRStmTHMKRG1pZzJteTBaNUp4VkJXR2R4eWJBVzhOU3k3YlJQMzhOT0pkdkRVcXN2UlJGOVVtdjM5czJGWXA3Vi9aTEhTMAp2T0NJMS9CUi96S0ZEKzh3Q240MkdiS1BNeHpZN25WQVRaVHBESXR4YVFLQmdRRGtiZEFzS0s3NS9Iano0NWFqCjl6MHJpTnpXcDkyTGtHK0daVXFzbHZtNjhxQlQyeDE1bzNlclJSOUFoVUdQQkgxWUlMYkRweStCL0hBdlNSN2wKN20rencxd2xHRGpZWm5lbkpUWkFteExrbnNoV2wzc0hacWxwZUlBS0pDZEZQMkNUaThoeUczVWpqN3cvRitKSwpFeU81NlJtNkh3d2Fac3VBTFhFMUpyR0tLd0tCZ1FEWUVxUmYyVTgydlQxOWZxVXZxYzkxalVzNllrNGQ4bnhZClNhNVp0aFU4eUFwZmNHVSt5STNab2hrVEdMaDVQL1U2N0VuYWRSc3ZPOGpXN05IMWxmU1lRakN6YVN5ajFVNTAKMmkwSDlVNXRkYnNuOG9NRnI0Vm5JVU9ZQnBlN0JlaFMxNmUyMTA3K2RDWkYrNlVHcUxKSXFoT2tXZ2ord2pPQwpRcTE5MFdJVXZRS0JnUUNLTlBiVEFQcDlQZ2hnWjc3cERkbncwU25zcGp3aENRNnhIZkFFWklSTVhDZ3RGRkhOCkd0NTR2YVdmQUFFZWF2VDdzUzlqU1hBeEVXOCs3TnJJKzI2U01RMDdWR0J3YmU3UExuQ1l2anE4SUdYT0huRE4KbFl2Q3lLbVBlVGhaYVhNaFVsM0F6R1FmVkFQdG1LSE5kNjhSK0xzY0pWVEpWSkNqeU5ySjhkTlJhUUtCZ1FEVwpmek1rWDVMdWtWQlFtMythWUdXdG1aVmJvU2xSTzE1TE91SFU5eGdBSGNtR1V3cC9HQk1SUUlUSjIxbU9MSHJpCmdwMFNPL3kvbUFiWnJZRUUzbGRSS3l3emZxNHMrZDBIeldxMG9zVzNqZzg4S2RmOXRlK2xvSFQ4bjFiUzk1dFoKV2ZLSlpSWnJMWnl0RHBJVm1UUmJSRk41YlZQT3E3VDhrL3FzazBaZHRRS0JnQklXdkpGMlFlQVJ0Q1B1Nk5pMQpTZ0pjLzZGc1NQME1sQjk3WXpaeG4vRnRsSU95ZjZSRFpQVlp0bkxKekMrT0xuZVFBSWpGZ0Y1QTV2NVZWKzY3ClRMeUUrNFI0VlQvaVBrSkZ5aCtkMytPY2JvR2RpNEJFbkdraFZsUlU3cW5MT2c0Q3RxMlJ3QWlkUWVNRDdEeEsKQXVSN0lqVE5XeEFTbTFaRFBvL2JkWE9JCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+      - key: SPACES_SECRET
+        scope: RUN_AND_BUILD_TIME
+        value: VmS5EvpLKXg/LRHqenIF0jDrjs9LDHTZU+PEs9rRTls
+      - key: SPACES_KEY
+        scope: RUN_AND_BUILD_TIME
+        value: DO00AMDWTWJHXFDPJTUW
+      - key: SPACES_ENDPOINT
+        scope: RUN_AND_BUILD_TIME
+        value: https://nyc3.digitaloceanspaces.com
     github:
-      branch: main
-      deploy_on_push: true
+      branch: Add-address-and-telemetry-changes
       repo: techswarn/backend
-    http_port: 3000
-    instance_count: 1
-    instance_size_slug: basic-xs
+    http_port: 443
+    instance_size_slug: professional-1l
     name: go-backend
     run_command: bin/backend
     source_dir: /

@@ -11,11 +11,12 @@ import (
 
 func Process(c *fiber.Ctx) error {
 	fmt.Println("Health checks route")
+	fmt.Printf("CPU count: %d \n", runtime.NumCPU())
 	done := make(chan int)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
-		fmt.Printf("CPU count: %d \n", runtime.NumCPU())
-		fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
+		//fmt.Printf("CPU count: %d \n", runtime.NumCPU())
+		//fmt.Printf("GO routine count: %d \n", runtime.NumGoroutine())
 		go func() {
 			for {
 				select {
