@@ -23,7 +23,6 @@ func NewFiberApp() *fiber.App {
 	// create a new fiber application
 	var app *fiber.App = fiber.New()
 	fmt.Println("Initializing App")
-	app.Use(cors.New())
 
 	// app.Use(cors.New(cors.Config{
 	// 	AllowOriginsFunc: func(origin string) bool {
