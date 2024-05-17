@@ -30,12 +30,12 @@ func NewFiberApp() *fiber.App {
 	// 		return os.Getenv("ENVIRONMENT") == "development"
 	// 	},
 	// }))
-	app.Use(cors.New(cors.Config{
-        AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
-        AllowOrigins:     "*",
-        AllowCredentials: true,
-        AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
-    }))
+	// app.Use(cors.New(cors.Config{
+    //     AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
+    //     AllowOrigins:     "*",
+    //     AllowCredentials: true,
+    //     AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+    // }))
 		
 	//Loging middleware
 	app.Use(logger.New(logger.Config{
