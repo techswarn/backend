@@ -14,6 +14,7 @@ func Process(c *fiber.Ctx) error {
 
 	log.Println("Health checks route")
 	headers := c.GetReqHeaders()
+	fmt.Printf("%#v", headers)
 	done := make(chan int)
 
 	for i := 0; i < runtime.NumCPU(); i++ {
