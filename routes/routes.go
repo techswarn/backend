@@ -12,6 +12,7 @@ func SetupRoutes(app *fiber.App) {
 	var publicRoutes fiber.Router = app.Group("/api/v1")
 
 	//Health checks and other data
+	publicRoutes.Get("/health", handlers.Health)
 	publicRoutes.Get("/", handlers.Process)
 
 	//Auth

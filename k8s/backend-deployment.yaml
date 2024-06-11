@@ -22,6 +22,12 @@ spec:
           name: go-backend
           ports:
             - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
           env:
             - name: DB_HOST
               value: "db-mysql-blr-do-user-11648032-0.b.db.ondigitalocean.com"

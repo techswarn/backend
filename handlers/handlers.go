@@ -40,6 +40,13 @@ func Process(c *fiber.Ctx) error {
 	})
 }
 
+func Health(c *fiber.Ctx) error {
+	return c.Status(http.StatusOK).JSON(models.Response[any]{
+		Success: true,
+		Message: "API healthy",
+	})
+}
+
 //IMAGE UPLOAD HANDLERS
 
 func UploadFile(c *fiber.Ctx) error {
